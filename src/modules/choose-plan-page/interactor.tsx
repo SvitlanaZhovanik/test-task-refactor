@@ -228,10 +228,6 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
       return;
     }
 
-    if (user?.email !== null) {
-      return;
-    }
-
     if (router.query?.token) {
       API.auth.byEmailToken(router.query.token as string);
     }
