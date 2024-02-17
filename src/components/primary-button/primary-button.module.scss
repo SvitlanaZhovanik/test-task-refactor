@@ -1,0 +1,44 @@
+@import "../../styles/vars";
+
+.primaryButton {
+  padding: 12px 0;
+  background-color: $btn-blue;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 24px;
+  color: $text-white;
+  transition: all .3s;
+  text-align: center;
+  overflow: hidden;
+  &:hover {
+    cursor: pointer;
+    background-color: $btn-blue-hover;
+    color: $text-white;
+    transition: all .3s;
+  }
+  &:disabled {
+    background-color: $btn-gray;
+    color: #1D1D1D;
+    &:hover {
+      cursor: not-allowed;
+      color: $text-gray;
+    }
+    &:active {
+      background-color: $btn-gray;
+    }
+  }
+  &:active {
+    background-color: $btn-blue;
+  }
+}
+
+.withIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img, svg {
+    margin-right: 6px;
+  }
+}
