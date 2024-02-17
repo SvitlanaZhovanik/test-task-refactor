@@ -276,38 +276,52 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
   }, [loadImageCover, loadPdfCover]);
 
   const getPlans = (t: (key: string) => string): Plan[] => {
-    const getTrialFormattedPrice = (price: number, currency: string) => {
-      if (currency === "USD") {
-        return `$${price / 100}`;
-      }
+  const getTrialFormattedPrice = (price: number, currency: string) => {
+    let currencySymbol= '';
 
-      if (currency === "GBP") {
-        return `£${price / 100}`;
-      }
+    switch (currency) {
+      case "USD":
+        currencySymbol = '$';
+        break;
+      case "GBP":
+        currencySymbol = '£';
+        break;
+      default:
+        currencySymbol = '€';
+    }
 
-      return `€${price / 100}`;
-    };
+    return `${currencySymbol}${price / 100}`;
+};
 
     const getAnnualFormattedPrice = ({ price, currency }: { price: number, currency: string }) => {
-      if (currency === "USD") {
-        return `$${(price / 100 / 12).toFixed(2)}`;
+      let currencySymbol= '';
+
+      switch (currency) {
+        case "USD":
+        case "GBP":
+        currencySymbol = '$';
+        break;
+        default:
+        currencySymbol = '€';
       }
-      if (currency === "GBP") {
-        return `$${(price / 100 / 12).toFixed(2)}`;
-      }
-      return `€${(price / 100 / 12).toFixed(2)}`;
+
+      return `${currencySymbol}${(price / 100 / 12).toFixed(2)}`;
     };
 
     const getCurrency = (currency: string) => {
-      if (currency === "USD") {
-        return "$";
-      }
+       let currencySymbol = '';
 
-      if (currency === "GBP") {
-        return "£";
+      switch (currency) {
+        case "USD":
+          currencySymbol = '$';
+          break;
+        case "GBP":
+          currencySymbol = '£';
+          break;
+        default:
+        currencySymbol = '€';
       }
-
-      return "€";
+      return currencySymbol;
     };
 
 
