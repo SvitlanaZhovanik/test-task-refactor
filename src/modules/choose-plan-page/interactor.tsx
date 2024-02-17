@@ -11,7 +11,7 @@ import {
 import check from "./assets/check.svg";
 import cross from "./assets/cross.svg";
 import { useRouter } from "next/router";
-import {useEffect, useState,useCallback, useMemo, use} from "react";
+import React from "react";
 
 export enum PAGE_LINKS {
   MAIN = "/",
@@ -97,13 +97,13 @@ export interface IPaymentPageInteractor {
 
 
 export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
-  const [selectedPlan, setSelectedPlan] = useState<PaymentPlanId>(
+  const [selectedPlan, setSelectedPlan] = React.useState<PaymentPlanId>(
     PaymentPlanId.MONTHLY_FULL
   );
-  const [file, setFile] = useState<ApiFile>();
-  const [imagePDF, setImagePDF] = useState<Blob | null>(null);
-  const [isImageLoading, setIsImageLoading] = useState(false);
-  const [fileLink, setFileLink] = useState<string | null>(null);
+  const [file, setFile] = React.useState<ApiFile>();
+  const [imagePDF, setImagePDF] = React.useState<Blob | null>(null);
+  const [isImageLoading, setIsImageLoading] = React.useState(false);
+  const [fileLink, setFileLink] = React.useState<string | null>(null);
 
   const router = useRouter();
 
@@ -151,7 +151,7 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
 
     router.push({ pathname: `${PAGE_LINKS.PAYMENT}`, query: router.query });
   };
- const loadPdfCover = useCallback(async (): Promise<void> => {
+ const loadPdfCover = React.useCallback(async (): Promise<void> => {
     if (!file || file.internal_type !== "PDF") {
       return;
     }
@@ -183,7 +183,7 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
     }
   }, [file, router.query?.file, router.query?.editedFile]);
 
-  const loadImageCover = useCallback(async () => {
+  const loadImageCover = React.useCallback(async () => {
     if (
       !file ||
       !imagesFormat.includes(file.internal_type) ||
@@ -217,7 +217,7 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
   return Object.keys(PaymentPlanId).find((key) => PaymentPlanId[key] === value) as PaymentPlanId;
 }
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (user?.subscription !== null) {
       router.push(`${PAGE_LINKS.DASHBOARD}`);
     }
@@ -238,7 +238,7 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
   }, [user?.subscription, user?.email, router.query?.token]);
 
   // @NOTE: analytics on page rendered
-  useEffect(() => {
+  React.useEffect(() => {
     if (!localStorage.getItem("select_plan_view")) {
       console.log("send event analytic3");
     }
@@ -250,7 +250,7 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
     };
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     API.files.getFiles().then((res) => {
       if (router.query?.file) {
         const chosenFile = res.files.find(
@@ -266,7 +266,7 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
   }, []);
 
   // @NOTE: setting pre-select plan for users from remarketing emails
-  useEffect(() => {
+  React.useEffect(() => {
     if (router.query?.fromEmail === "true") {
       setSelectedPlan(PaymentPlanId.MONTHLY_FULL_SECOND_EMAIL);
       return;
@@ -274,7 +274,7 @@ export const usePaymentPageInteractor = (): IPaymentPageInteractor => {
   }, [abTests]);
 
   // @NOTE: generating cover for pdf-documents
-  useEffect(() => {
+  React.useEffect(() => {
     loadPdfCover();
     loadImageCover();
   }, [loadImageCover, loadPdfCover]);
